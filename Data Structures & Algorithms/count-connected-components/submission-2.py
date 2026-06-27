@@ -1,0 +1,32 @@
+from collections import defaultdict
+
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        graph = defaultdict(list)
+        for edge in edges:
+            graph[edge[0]].append(edge[1])
+            graph[edge[1]].append(edge[0])
+
+        components = 0
+
+        seen = set()
+
+        def bfs(nd):
+            q = [nd]
+            while q:
+                curr = q.pop()
+                seen.add(curr)
+                for connected in graph[curr]:
+                    if connected not in seen:
+                        q.append(connected)
+
+        for nd in graph.keys():
+            if nd not in seen:
+                bfs(nd)
+                components += 1
+
+        return n - len(seen) + components
+            
+
+                
+                
